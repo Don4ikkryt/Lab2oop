@@ -16,7 +16,8 @@ int main() {
 
 	LongNumber num1("-882121334");
 	LongNumber num2("-213245678");
-	cout << num1 + num2;
+	cout << num1 + num2<<endl;
+	cout << num1 - num2;
 	system("pause");
 	return 0;
 }

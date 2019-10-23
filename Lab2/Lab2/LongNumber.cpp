@@ -37,6 +37,17 @@ int LongNumber::GetLenght() {
 vector<int> LongNumber::GetDigits() {
 	return digits;
 }
+void LongNumber::ChangeSign() {
+	sign = !sign;
+}
+LongNumber& LongNumber::operator=(LongNumber other) {
+	this->sign = other.GetSign();
+	this->digits.clear();
+	for (int i = 0; i < other.GetLenght(); i++) {
+		this->digits.push_back(other.GetDigits()[i]);
+	}
+	return *this;
+}
 LongNumber LongNumber::operator+(LongNumber other) {
 	if (this->GetSign() && other.GetSign() || !this->GetSign() && !other.GetSign()) {
 		LongNumber *minSize = this->GetLenght() > other.GetLenght() ? &other : this;
@@ -73,15 +84,105 @@ LongNumber LongNumber::operator+(LongNumber other) {
 		}
 		return LongNumber(NewNumber);
 	}
-	/*else
+	else
 	{
 		if (this->GetSign() && !other.GetSign()) {
-			return other - this;
+			LongNumber differentSign;
+			differentSign = *this;
+			differentSign.ChangeSign();
+			return other - differentSign;
 		}
 		else
 		{
-			return this - other;
+			LongNumber differentSign;
+			differentSign = other;
+			differentSign.ChangeSign();
+			return *this - differentSign;
 		}
-	}*/
-	return LongNumber("0");
+	}
+	
+}
+LongNumber LongNumber::operator-(LongNumber other) {
+	if (this->GetSign() && !other.GetSign() || !this->GetSign() && other.GetSign()) 
+	{
+		LongNumber differentSign;
+		differentSign = other;
+		differentSign.ChangeSign();
+		return *this + differentSign;
+	}
+	else {
+		LongNumber *maxSize, *minSize;
+		LongNumber temp;
+		maxSize = &temp;
+		minSize = &temp;
+		if (this->GetLenght() != other.GetLenght()) {
+			minSize = this->GetLenght() > other.GetLenght() ? &other : this;
+			maxSize = this->GetLenght() > other.GetLenght() ? this : &other;
+		}
+		else
+		{
+			for (int i = 0; i < this->GetDigits().size(); i--) {
+				if (this->GetDigits()[i] == other.GetDigits()[i]) {
+					continue;
+				}
+					if (this->GetDigits()[i] > other.GetDigits()[i]) {
+						minSize = &other;
+						maxSize = this;
+						break;
+					}
+					else
+					{
+						minSize = this;
+						maxSize = &other;
+						break;
+			    	}
+				
+			}
+		}
+		vector<int> Digits1 = maxSize->GetDigits();
+		vector<int> Digits2 = minSize->GetDigits();
+		int digit1, digit2, res;
+		string NewNumber;
+		for (int i = 0; i < minSize->GetLenght(); i++) {
+			digit1 = Digits1[Digits1.size() - 1 - i];
+			digit2 = Digits2[Digits2.size() - 1 - i];
+			if (digit1 == digit2)
+			{
+				NewNumber = "0" + NewNumber;
+			}
+			if (digit1 > digit2) {
+				res = digit1 - digit2;
+				NewNumber = to_string(res) + NewNumber;
+			}
+			if (digit1 < digit2) {
+				res = digit1 + 10 - digit2;
+			 
+				if (Digits1[Digits1.size() - i - 2] == 0) {
+					int iter = 0;
+					while (Digits1[Digits1.size() - i - 2 - iter] == 0) {
+						Digits1[Digits1.size() - i - 2 - iter] = 9;
+						iter++;
+					}
+					Digits1[Digits1.size() - i - 2 - iter] = Digits1[Digits1.size() - i - 2 - iter] - 1;
+				}
+				else {
+					Digits1[Digits1.size() - i - 2] = Digits1[Digits1.size() - i - 2] - 1;
+				}
+				NewNumber = to_string(res) + NewNumber;
+			}
+
+		}
+		for (int i = Digits1.size() - Digits2.size() - 1; i >= 0; i--) {
+			NewNumber = to_string(Digits1[i]) + NewNumber;
+		}
+				
+		if (maxSize == &other && other.GetSign()) {
+			return LongNumber(NewNumber);
+		}
+		else {
+			return LongNumber("-" + NewNumber);
+		}
+		
+	}
+
 }

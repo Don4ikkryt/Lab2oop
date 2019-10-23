@@ -8,6 +8,7 @@ private:
 	std::vector<int> digits;
 	void ConvertFromStringToVector(std::string &Number);
 	bool sign;
+	void ChangeSign();
 public:
 	LongNumber();
 	LongNumber(std::string Number);
@@ -16,5 +17,6 @@ public:
 	std::vector<int> GetDigits();
 	LongNumber operator +(LongNumber other);
 	LongNumber operator -(LongNumber other);
+	LongNumber& operator =(LongNumber other);
 	
 };
