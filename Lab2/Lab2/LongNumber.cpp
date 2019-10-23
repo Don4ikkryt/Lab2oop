@@ -74,6 +74,10 @@ LongNumber LongNumber::operator+(LongNumber other) {
 				dozen = res / 10;
 				res = res % 10;
 			}
+			else
+			{
+				dozen = 0;
+			}
 			NewNumber = to_string(res) + NewNumber;
 		}
 		if (dozen != 0) {
@@ -176,7 +180,7 @@ LongNumber LongNumber::operator-(LongNumber other) {
 			NewNumber = to_string(Digits1[i]) + NewNumber;
 		}
 				
-		if (maxSize == &other && other.GetSign()) {
+		if ((maxSize == this && !this->GetSign())|| (maxSize == &other && other.GetSign())) {
 			return LongNumber(NewNumber);
 		}
 		else {
@@ -185,4 +189,29 @@ LongNumber LongNumber::operator-(LongNumber other) {
 		
 	}
 
+}
+LongNumber LongNumber::operator*(LongNumber other) {
+
+	if (this->GetLenght() <= 6 && other.GetLenght() <= 6) {
+		int Number1=0, Number2=0;
+		int discrage = 1;
+		for (int i = this->GetLenght()-1; i >=0 ; i--) {
+			Number1 += discrage * this->GetDigits()[i];
+			discrage *= 10;
+		}
+		discrage = 1;
+		for (int i = other.GetLenght()-1; i >=0; i--) {
+			Number2 += discrage * other.GetDigits()[i];
+			discrage *= 10;
+
+		}
+		int Multi = Number1 * Number2;
+		return LongNumber(to_string(Multi));
+	}
+}
+void LongNumber::SetDigits(vector<int> &NewDigits) {
+	digits.clear();
+	for (int i = 0; i < NewDigits.size(); i++) {
+		digits.push_back(NewDigits[i]);
+	}
 }
