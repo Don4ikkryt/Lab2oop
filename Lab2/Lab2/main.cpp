@@ -1,5 +1,6 @@
 #include "LongNumber.h"
 #include "Caratsybi.h"
+#include "Shenhage.h"
 #include <iostream>
 #include <ostream>
 using namespace std;
@@ -26,7 +27,9 @@ int main() {
 	Caratsybi car;
 	LongNumber num5;
 	num5 = car.Multiplication(num2 ,num1);
-	
+	Shenhage sh;
+	cout << num5;
+	num5 = sh.Multiplication(num1, num2);
 	cout << num5;
 	system("pause");
 	return 0;
